@@ -12,6 +12,6 @@ services:
     restart: unless-stopped
     platform: linux/x86_64
     ports:
-      - "8455:8455"
+      - "8081:8081"
     networks:
       - mdb-network
