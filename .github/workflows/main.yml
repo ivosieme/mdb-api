@@ -1,24 +1,36 @@
-name: Spring Boot mdb-api CI
+name: Spring Boot CI
 
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
       name: Check out the repository code
-      
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    - name: Run tests
+      run: ./mvnw test
+
     - name: Build Docker image
       run: docker build . -t spring-boot-app
-      
+
     - name: Run Docker container
-      run: docker run -d --name spring-boot-testing -p 8081:8081 spring-boot-app
-      
-    - name: Wait for the application to start
-      run: sleep 30 # Adjust this depending on how long your app takes to start up
-      
-    - name: Execute tests
-      run: |
-        docker exec spring-boot-testing ./mvnw test
+      run: docker run -d --name spring-boot-testing -p 8080:8080 spring-boot-app
+
+    - name: Health check
+      run: sleep 30 # Adjust based on your app's startup time
