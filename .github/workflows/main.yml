@@ -3,7 +3,7 @@ name: Spring Boot CI
 on: [push]
 
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
@@ -27,10 +27,32 @@ jobs:
       run: ./mvnw test
 
     - name: Build Docker image
+      if: github.ref == 'refs/heads/main'
       run: docker build . -t spring-boot-app
 
     - name: Run Docker container
+      if: github.ref == 'refs/heads/main'
       run: docker run -d --name spring-boot-testing -p 8080:8080 spring-boot-app
 
     - name: Health check
+      if: github.ref == 'refs/heads/main'
       run: sleep 30 # Adjust based on your app's startup time
+      
+    - name: Set up Kubeconfig
+      if: github.ref == 'refs/heads/main'
+      env:
+        KUBECONFIG_CONTENTS: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "$KUBECONFIG_CONTENTS" > ./kubeconfig
+        echo "KUBECONFIG_FILE=./kubeconfig" >> $GITHUB_ENV
+
+    - name: Deploy to Kubernetes
+      if: github.ref == 'refs/heads/main'
+      run: |
+        kubectl --kubeconfig $KUBECONFIG_FILE apply -f deployment.yml
+        kubectl --kubeconfig $KUBECONFIG_FILE rollout status deployment/spring-boot-app
+
+    - name: Expose deployment
+      if: github.ref == 'refs/heads/main'
+      run: |
+        kubectl --kubeconfig $KUBECONFIG_FILE expose deployment spring-boot-app --type=NodePort --port=8081
