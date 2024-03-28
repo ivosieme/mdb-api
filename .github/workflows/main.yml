@@ -1,0 +1,24 @@
+name: Spring Boot mdb-api CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out the repository code
+      
+    - name: Build Docker image
+      run: docker build . -t spring-boot-app
+      
+    - name: Run Docker container
+      run: docker run -d --name spring-boot-testing -p 8081:8081 spring-boot-app
+      
+    - name: Wait for the application to start
+      run: sleep 30 # Adjust this depending on how long your app takes to start up
+      
+    - name: Execute tests
+      run: |
+        docker exec spring-boot-testing ./mvnw test
