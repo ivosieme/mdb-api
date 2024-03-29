@@ -74,6 +74,8 @@ jobs:
         DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
         KUBECONFIG_FILE: ./kubeconfig
       run: |
+        kubectl set env deployment/spring-boot-app DB_ACCESS_STRING=${DB_ACCESS_STRING}
+        kubectl set env deployment/spring-boot-app DB_NAME=${DB_NAME}
         kubectl --kubeconfig $KUBECONFIG_FILE apply -f deployment.yml
         kubectl --kubeconfig $KUBECONFIG_FILE rollout status deployment/spring-boot-app
 
