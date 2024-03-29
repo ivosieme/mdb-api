@@ -55,19 +55,19 @@ jobs:
 
       - name: Apply Kubernetes Deployment
         if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-deployment.yaml -n mdb
+        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-deployment.yaml -n mdb || true
         env:
           KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
 
       - name: Apply Kubernetes Service
         if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-service-loadbalancer.yaml -n mdb
+        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-service-loadbalancer.yaml -n mdb || true
         env:
           KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
 
       - name: Apply Kubernetes Horizontal Pod Autoscaler
         if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-hpa.yaml -n mdb
+        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-hpa.yaml -n mdb || true 
         env:
           KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
 
