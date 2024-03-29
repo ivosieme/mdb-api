@@ -5,11 +5,11 @@ metadata:
   namespace: mdb
 spec:
   type: LoadBalancer
-  loadBalancerIP: 161.97.165.65
+  loadBalancerIP: 161.97.165.65  # Presuming your environment supports specifying this
   ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30080  # Specify only if you need a particular node port, within the allowed range.
+    - name: http
+      protocol: TCP
+      port: 8080  # The external service port
+      targetPort: 8081  # The pod's port where the service sends traffic
   selector:
     app: api
