@@ -17,5 +17,14 @@ spec:
           image: ghcr.io/ivosieme/spring-boot-app:latest
           ports:
             - containerPort: 8080
+      env:
+        - name: DB_ACCESS_STRING
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['DB_ACCESS_STRING']
+        - name: DB_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['DB_NAME']
       imagePullSecrets:
         - name: ghcr-creds
