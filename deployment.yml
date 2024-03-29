@@ -21,12 +21,12 @@ spec:
             - name: DB_ACCESS_STRING
               valueFrom:
                 secretKeyRef:
-                  name: db_access_string
-                  key: db_access_string
+                  name: db-access-string
+                  key: db-access-string
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: db_name
-                  key: db_name
+                  name: db-name
+                  key: db-name
       imagePullSecrets:
         - name: ghcr-creds
