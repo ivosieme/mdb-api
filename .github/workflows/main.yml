@@ -36,16 +36,28 @@ jobs:
         DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
       run: docker build . -t spring-boot-app
 
-    - name: Run Docker container
-      if: github.ref == 'refs/heads/main'
-      env:
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
-      run: docker run -d --name spring-boot-testing -p 8080:8080 spring-boot-app
+#    - name: Run Docker container
+#      if: github.ref == 'refs/heads/main'
+#      env:
+#        DB_NAME: ${{ secrets.DB_NAME }}
+#        DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
+#      run: docker run -d --name spring-boot-testing -p 8080:8080 spring-boot-app
+#
+#    - name: Health check
+#      if: github.ref == 'refs/heads/main'
+#      run: sleep 30 # Adjust based on your app's startup time
 
-    - name: Health check
+    - name: Log in to GitHub Container Registry
       if: github.ref == 'refs/heads/main'
-      run: sleep 30 # Adjust based on your app's startup time
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GIT_ACCESS_TOKEN }}
+
+    - name: Push Docker image to GitHub Container Registry
+      if: github.ref == 'refs/heads/main'
+      run: docker push ghcr.io/${{ github.repository_owner }}/spring-boot-app:latest
       
     - name: Set up Kubeconfig
       if: github.ref == 'refs/heads/main'
