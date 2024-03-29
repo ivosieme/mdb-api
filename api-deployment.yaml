@@ -16,6 +16,7 @@ spec:
       containers:
         - name: api
           image: ghcr.io/ivosieme/api:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 8081
           env:
