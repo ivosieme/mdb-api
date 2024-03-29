@@ -1,32 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app
+  name: api
+  namespace: mdb
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: spring-boot-app
+      app: api
   template:
     metadata:
       labels:
-        app: spring-boot-app
+        app: api
     spec:
       containers:
-        - name: spring-boot-app
-          image: ghcr.io/ivosieme/spring-boot-app:latest
+        - name: api
+          image: ghcr.io/ivosieme/mdb-api:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
             - name: DB_ACCESS_STRING
               valueFrom:
                 secretKeyRef:
                   name: db-access-string
                   key: db-access-string
+                  namespace: mdb
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: db-name
                   key: db-name
+                  namespace: mdb
       imagePullSecrets:
         - name: ghcr-creds
