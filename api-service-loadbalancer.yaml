@@ -5,6 +5,7 @@ metadata:
   namespace: mdb
 spec:
   type: LoadBalancer
+  loadBalancerIP: 161.97.165.65
   ports:
     - protocol: TCP
       port: 8080
