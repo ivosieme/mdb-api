@@ -19,8 +19,14 @@ spec:
             - containerPort: 8080
           env:
             - name: DB_ACCESS_STRING
-              value: $(DB_ACCESS_STRING)
+              valueFrom:
+                secretKeyRef:
+                  name: db_access_string
+                  key: db_access_string
             - name: DB_NAME
-              value: $(DB_NAME)
+              valueFrom:
+                secretKeyRef:
+                  name: db_name
+                  key: db_name
       imagePullSecrets:
         - name: ghcr-creds
