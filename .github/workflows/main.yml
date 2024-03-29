@@ -67,18 +67,29 @@ jobs:
         echo "$KUBECONFIG_CONTENTS" > ./kubeconfig
         echo "KUBECONFIG_FILE=./kubeconfig" >> $GITHUB_ENV
 
-    - name: Deploy to Kubernetes
+    - name: Apply Kubernetes deployment
       if: github.ref == 'refs/heads/main'
-      env:
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
-        KUBECONFIG_FILE: ./kubeconfig
       run: |
         export KUBECONFIG=$KUBECONFIG_FILE
-        kubectl set env deployment/spring-boot-app DB_ACCESS_STRING=${DB_ACCESS_STRING}
-        kubectl set env deployment/spring-boot-app DB_NAME=${DB_NAME}
-        kubectl --kubeconfig $KUBECONFIG_FILE apply -f deployment.yml
-        kubectl --kubeconfig $KUBECONFIG_FILE rollout status deployment/spring-boot-app
+        envsubst < deployment.yml | kubectl apply -f -
+      env:
+        KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
+
+
+#    - name: Deploy to Kubernetes
+#      if: github.ref == 'refs/heads/main'
+#      env:
+#        DB_NAME: ${{ secrets.DB_NAME }}
+#        DB_ACCESS_STRING: ${{ secrets.DB_ACCESS_STRING }}
+#        KUBECONFIG_FILE: ./kubeconfig
+#      run: |
+#        export KUBECONFIG=$KUBECONFIG_FILE
+#        kubectl set env deployment/spring-boot-app DB_ACCESS_STRING=${DB_ACCESS_STRING}
+#        kubectl set env deployment/spring-boot-app DB_NAME=${DB_NAME}
+#        kubectl --kubeconfig $KUBECONFIG_FILE apply -f deployment.yml
+#        kubectl --kubeconfig $KUBECONFIG_FILE rollout status deployment/spring-boot-app
 
     - name: Expose deployment
       if: github.ref == 'refs/heads/main'
