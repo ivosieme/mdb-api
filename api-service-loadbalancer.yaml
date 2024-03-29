@@ -4,12 +4,10 @@ metadata:
   name: api
   namespace: mdb
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 161.97.165.65  # Presuming your environment supports specifying this
+  type: ClusterIP  # Changed from LoadBalancer to ClusterIP
   ports:
-    - name: http
-      protocol: TCP
-      port: 8080  # The external service port
-      targetPort: 8081  # The pod's port where the service sends traffic
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
   selector:
     app: api
