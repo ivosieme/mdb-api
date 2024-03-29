@@ -91,6 +91,9 @@ jobs:
 #        kubectl --kubeconfig $KUBECONFIG_FILE apply -f deployment.yml
 #        kubectl --kubeconfig $KUBECONFIG_FILE rollout status deployment/spring-boot-app
 
+    - name: Delete existing service if it exists
+      run: kubectl --kubeconfig $KUBECONFIG_FILE delete service spring-boot-app || true
+
     - name: Expose deployment
       if: github.ref == 'refs/heads/main'
       env:
