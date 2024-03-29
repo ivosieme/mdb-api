@@ -22,5 +22,5 @@ spec:
               value: $(DB_ACCESS_STRING)
             - name: DB_NAME
               value: $(DB_NAME)
-          imagePullSecrets:
-            - name: ghcr-creds
+      imagePullSecrets:
+        - name: ghcr-creds
