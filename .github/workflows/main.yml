@@ -8,7 +8,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-        name: Check out the repository code
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -53,31 +52,11 @@ jobs:
           echo "$KUBECONFIG_CONTENTS" > ./kubeconfig
           echo "KUBECONFIG_FILE=./kubeconfig" >> $GITHUB_ENV
 
-      - name: Apply Kubernetes Deployment
-        if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-deployment.yaml -n mdb || true
-        env:
-          KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
-
-      - name: Apply Kubernetes Service
-        if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-service-loadbalancer.yaml -n mdb || true
-        env:
-          KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
-
-      - name: Apply Kubernetes Horizontal Pod Autoscaler
-        if: github.ref == 'refs/heads/main'
-        run: kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-hpa.yaml -n mdb || true
-        env:
-          KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
-
-      - name: Delete existing service if it exists
-        run: kubectl --kubeconfig $KUBECONFIG_FILE delete service api-loadbalancer -n mdb || true
-
-      - name: Expose deployment
+      - name: Apply Kubernetes Deployment, Service, and HPA
         if: github.ref == 'refs/heads/main'
         run: |
-          kubectl --kubeconfig $KUBECONFIG_FILE delete service api --namespace=mdb
-          kubectl --kubeconfig $KUBECONFIG_FILE expose deployment api --namespace=mdb --type=LoadBalancer --port=8080 --target-port=8081
+          kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-deployment.yaml -n mdb || true
+          kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-service-loadbalancer.yaml -n mdb || true
+          kubectl --kubeconfig $KUBECONFIG_FILE apply -f api-hpa.yaml -n mdb || true
         env:
-          KUBECONFIG_FILE: ./kubeconfig
+          KUBECONFIG_FILE: ${{ env.KUBECONFIG_FILE }}
