@@ -5,7 +5,7 @@ metadata:
   namespace: mdb
 spec:
   type: LoadBalancer
-  loadBalancerIP: 161.97.165.65  # Presuming your environment supports specifying this
+  loadBalancerIP: 161.97.165.65  # Presuming environment supports specifying this
   ports:
     - name: http
       protocol: TCP
