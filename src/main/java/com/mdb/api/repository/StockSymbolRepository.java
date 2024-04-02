@@ -59,6 +59,7 @@ public class StockSymbolRepository{
         if (symbol != stockSymbol.getSymbol()) {
             throw new BadRequestException("Symbol dies not match the Object symbol given.");
         }
+        System.out.println("performing PERSIST for symbol: " + stockSymbol.getSymbol());
         return mongoTemplate.save(stockSymbol);
     }
 

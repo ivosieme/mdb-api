@@ -50,6 +50,7 @@ public class StockController {
             System.out.println("Mismatched symbols: path symbol {} and body symbol {}");
             throw new BadRequestException("Symbol mismatch");
         }
+        System.out.println("Trigger Repository for: " + updatedStockSymbol.getSymbol());
         return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
 
