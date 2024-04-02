@@ -22,9 +22,12 @@ public class StockController {
     }
     // end::get-aggregate-root[]
 
+    @GetMapping("/api/stock/{symbol}")
+    StockSymbol findOneBySymbol(@PathVariable String symbol) { return stockSymbolRepository.findOneBySymbol(symbol); }
+
     @PostMapping("/api/stock")
-    StockSymbol newStockSymbol(@RequestBody StockSymbol newEmployee) {
-        return stockSymbolRepository.save(newEmployee);
+    StockSymbol newStockSymbol(@RequestBody StockSymbol stockSymbol) {
+        return stockSymbolRepository.save(stockSymbol);
     }
 
     @PutMapping("/api/stock/{symbol}")
