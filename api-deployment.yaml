@@ -24,6 +24,13 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
+          resources:
+            requests:
+              cpu: "100m"  # Requesting 100 millicores
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
           env:
             - name: APP_ENV
               value: 'prod'
