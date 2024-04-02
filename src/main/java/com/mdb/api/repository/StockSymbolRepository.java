@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.mongodb.client.result.UpdateResult;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class StockSymbolRepository{
@@ -57,8 +58,8 @@ public class StockSymbolRepository{
 
     public StockSymbol updateBySymbol(String symbol, StockSymbol stockSymbol) throws BadRequestException {
         System.out.println("repository enter for symbol: " + stockSymbol.getSymbol());
-        if (symbol != stockSymbol.getSymbol()) {
-            System.out.println("Symbol dies not match the Object symbol given: " + stockSymbol.getSymbol() + " Smybol" + symbol);
+        if (!Objects.equals(symbol, stockSymbol.getSymbol())) {
+            System.out.println("Symbol dies not match the Object symbol given: '" + stockSymbol.getSymbol() + "' - Smybol '" + symbol + "'");
             throw new BadRequestException("Symbol dies not match the Object symbol given.");
         }
         System.out.println("performing PERSIST for symbol: " + stockSymbol.getSymbol());
