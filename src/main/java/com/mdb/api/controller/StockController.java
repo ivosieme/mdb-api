@@ -31,6 +31,7 @@ public class StockController {
         return stockSymbolRepository.save(stockSymbol);
     }
 
+    /*
     @PutMapping("/api/stock/{symbol}")
     public ResponseEntity<StockSymbol> replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
         if (!symbol.equals(updatedStockSymbol.getSymbol())) {
@@ -38,6 +39,18 @@ public class StockController {
         }
         StockSymbol updated = stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
         return ResponseEntity.ok(updated);
+    }
+
+     */
+
+    @PutMapping("/api/stock/{symbol}")
+    StockSymbol replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
+        System.out.println("Updating stock symbol: " + updatedStockSymbol);
+        if (!symbol.equals(updatedStockSymbol.getSymbol())) {
+            System.out.println("Mismatched symbols: path symbol {} and body symbol {}");
+            throw new BadRequestException("Symbol mismatch");
+        }
+        return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
 
 
