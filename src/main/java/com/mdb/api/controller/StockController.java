@@ -45,12 +45,9 @@ public class StockController {
 
     @PutMapping("/api/stock/{symbol}")
     StockSymbol replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
-        System.out.println("Updating stock symbol: " + updatedStockSymbol);
         if (!symbol.equals(updatedStockSymbol.getSymbol())) {
-            System.out.println("Mismatched symbols: path symbol {} and body symbol {}");
             throw new BadRequestException("Symbol mismatch");
         }
-        System.out.println("Trigger Repository for: " + updatedStockSymbol.getSymbol());
         return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
 
