@@ -20,8 +20,8 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: TEST
-              value: 'hello'
+            - name: APP_ENV
+              value: 'prod'
             - name: DB_ACCESS_STRING
               valueFrom:
                 secretKeyRef:
