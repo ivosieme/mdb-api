@@ -56,7 +56,9 @@ public class StockSymbolRepository{
     }
 
     public StockSymbol updateBySymbol(String symbol, StockSymbol stockSymbol) throws BadRequestException {
+        System.out.println("repository enter for symbol: " + stockSymbol.getSymbol());
         if (symbol != stockSymbol.getSymbol()) {
+            System.out.println("Symbol dies not match the Object symbol given: " + stockSymbol.getSymbol() + " Smybol" + symbol);
             throw new BadRequestException("Symbol dies not match the Object symbol given.");
         }
         System.out.println("performing PERSIST for symbol: " + stockSymbol.getSymbol());
