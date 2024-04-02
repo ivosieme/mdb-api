@@ -52,7 +52,7 @@ public class StockSymbolRepository{
     }
 
     public StockSymbol save(StockSymbol stockSymbol) {
-        return mongoTemplate.insert(stockSymbol);
+        return mongoTemplate.save(stockSymbol);
     }
 
     public StockSymbol updateBySymbol(String symbol, StockSymbol stockSymbol) throws BadRequestException {

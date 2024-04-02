@@ -5,6 +5,7 @@ import com.mdb.api.model.StockSymbol;
 import com.mdb.api.repository.StockSymbolRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +32,14 @@ public class StockController {
     }
 
     @PutMapping("/api/stock/{symbol}")
-    StockSymbol replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
-        return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
+    public ResponseEntity<StockSymbol> replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
+        if (!symbol.equals(updatedStockSymbol.getSymbol())) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        StockSymbol updated = stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
+        return ResponseEntity.ok(updated);
     }
+
 
 
     //TODO: Add Update Aggregation & Nesting Collection
