@@ -48,6 +48,7 @@ public class StockController {
         if (!symbol.equals(updatedStockSymbol.getSymbol())) {
             throw new BadRequestException("Symbol mismatch");
         }
+        System.out.println(updatedStockSymbol);
         return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
 

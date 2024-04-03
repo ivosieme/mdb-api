@@ -10,4 +10,4 @@ spec:
     name: api
   minReplicas: 1
   maxReplicas: 6
-  targetCPUUtilizationPercentage: 40
+  targetCPUUtilizationPercentage: 90
