@@ -4,6 +4,7 @@ package com.mdb.api.controller;
 import com.mdb.api.model.StockSymbol;
 import com.mdb.api.repository.StockSymbolRepository;
 import org.apache.coyote.BadRequestException;
+import org.bson.types.Symbol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class StockController {
         if (!symbol.equals(updatedStockSymbol.getSymbol())) {
             throw new BadRequestException("Symbol mismatch");
         }
-        System.out.println(updatedStockSymbol);
+        System.out.println(symbol +" - Symbol: " + updatedStockSymbol.getSymbol() + " Price: " + updatedStockSymbol.getLastSale() + " Low: " + updatedStockSymbol.getLowSale() + " High: " + updatedStockSymbol.getHighSale());
         return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
 
