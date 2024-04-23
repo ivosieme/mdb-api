@@ -32,18 +32,6 @@ public class StockController {
         return stockSymbolRepository.save(stockSymbol);
     }
 
-    /*
-    @PutMapping("/api/stock/{symbol}")
-    public ResponseEntity<StockSymbol> replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
-        if (!symbol.equals(updatedStockSymbol.getSymbol())) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        StockSymbol updated = stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
-        return ResponseEntity.ok(updated);
-    }
-
-     */
-
     @PutMapping("/api/stock/{symbol}")
     StockSymbol replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
         if (!symbol.equals(updatedStockSymbol.getSymbol())) {
@@ -52,11 +40,6 @@ public class StockController {
         System.out.println(symbol +" - Symbol: " + updatedStockSymbol.getSymbol() + " Price: " + updatedStockSymbol.getLastSale() + " Low: " + updatedStockSymbol.getLowSale() + " High: " + updatedStockSymbol.getHighSale());
         return stockSymbolRepository.updateBySymbol(symbol, updatedStockSymbol);
     }
-
-
-
-    //TODO: Add Update Aggregation & Nesting Collection
-
 
     @DeleteMapping("/employees/{id}")
     void deleteStockSymbol(@PathVariable String id) {
