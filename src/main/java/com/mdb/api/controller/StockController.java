@@ -6,6 +6,7 @@ import com.mdb.api.repository.StockSymbolRepository;
 import org.apache.coyote.BadRequestException;
 import org.bson.types.Symbol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,11 @@ public class StockController {
     StockSymbol findOneBySymbol(@PathVariable String symbol) { return stockSymbolRepository.findOneBySymbol(symbol); }
 
     @PostMapping("/api/stock")
-    StockSymbol newStockSymbol(@RequestBody StockSymbol stockSymbol) {
-        return stockSymbolRepository.save(stockSymbol);
+    ResponseEntity<StockSymbol> newStockSymbol(@RequestBody StockSymbol stockSymbol) {
+        StockSymbol saved = stockSymbolRepository.save(stockSymbol);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
 
     @PutMapping("/api/stock/{symbol}")
     StockSymbol replaceStockSymbol(@RequestBody StockSymbol updatedStockSymbol, @PathVariable String symbol) throws BadRequestException {
